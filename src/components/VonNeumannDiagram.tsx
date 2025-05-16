@@ -125,7 +125,7 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
   // Skeletal view of bus
   const SkeletalBus = () => {
     const { isActive, source, destination, data } = state.bus;
-    
+
     // Format data for display
     const displayData = () => {
       if (data === null) return "";
@@ -137,68 +137,84 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
       }
       return JSON.stringify(data);
     };
-    
+
     // Determine direction of data flow
     const isFlowingToCPU = destination === "CPU";
     const isFlowingToMemory = destination === "Memory";
-    
+
     return (
       <div className="p-2">
-        <div className="relative h-10 flex items-center justify-center">
-          {/* Base wire */}
-          <div className="absolute w-full h-1.5 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 dark:from-amber-700 dark:via-amber-500 dark:to-amber-700 rounded-full"></div>
-          
+        <div className="relative h-24 flex justify-center">
+          {/* Base vertical wire */}
+          <div className="absolute h-full w-1.5 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-300 dark:from-amber-700 dark:via-amber-500 dark:to-amber-700 rounded-full"></div>
+
           {/* Connection points */}
-          <div className="absolute left-0 w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-400 border border-amber-600 dark:border-amber-300 shadow-sm"></div>
-          <div className="absolute right-0 w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-400 border border-amber-600 dark:border-amber-300 shadow-sm"></div>
-          
+          <div className="absolute top-0 w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-400 border border-amber-600 dark:border-amber-300 shadow-sm"></div>
+          <div className="absolute bottom-0 w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-400 border border-amber-600 dark:border-amber-300 shadow-sm"></div>
+
           {/* Data transfer visualization */}
           {isActive ? (
-            <div className="flex items-center justify-center w-full">
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-800/60 shadow-sm transform transition-transform duration-300 ${
-                isFlowingToCPU ? '-translate-x-2' : isFlowingToMemory ? 'translate-x-2' : ''
-              }`}>
-                <div className={`w-2 h-2 rounded-full ${
-                  isFlowingToCPU ? 'bg-blue-400 dark:bg-blue-500' : 
-                  isFlowingToMemory ? 'bg-green-400 dark:bg-green-500' : 
-                  'bg-amber-400 dark:bg-amber-500'
-                }`}></div>
+            <div className="flex items-center justify-center h-full">
+              <div
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-800/60 shadow-sm transform transition-transform duration-300 ${
+                  isFlowingToCPU
+                    ? "-translate-y-2"
+                    : isFlowingToMemory
+                    ? "translate-y-2"
+                    : ""
+                }`}
+              >
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    isFlowingToCPU
+                      ? "bg-blue-400 dark:bg-blue-500"
+                      : isFlowingToMemory
+                      ? "bg-green-400 dark:bg-green-500"
+                      : "bg-amber-400 dark:bg-amber-500"
+                  }`}
+                ></div>
                 <span className="text-xs font-mono text-amber-800 dark:text-amber-200 whitespace-nowrap">
                   {displayData()}
                 </span>
-                <div className={`text-xs ${
-                  isFlowingToCPU ? 'text-blue-600 dark:text-blue-400' : 
-                  isFlowingToMemory ? 'text-green-600 dark:text-green-400' : 
-                  'text-amber-600 dark:text-amber-400'
-                }`}>
-                  {isFlowingToCPU ? '← CPU' : isFlowingToMemory ? 'MEM →' : ''}
+                <div
+                  className={`text-xs ${
+                    isFlowingToCPU
+                      ? "text-blue-600 dark:text-blue-400"
+                      : isFlowingToMemory
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-amber-600 dark:text-amber-400"
+                  }`}
+                >
+                  {isFlowingToCPU ? "↑ CPU" : isFlowingToMemory ? "MEM ↓" : ""}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-center w-full">
-              <div className="flex items-center gap-1.5 text-xs text-amber-700 dark:text-amber-400">
+            <div className="flex items-center justify-center h-full">
+              <div className="flex flex-col items-center gap-1.5 text-xs text-amber-700 dark:text-amber-400">
                 <span className="font-medium">CPU</span>
-                <div className="flex items-center gap-0.5">
-                  <span className="text-[10px]">⟷</span>
-                  <span className="text-[8px] tracking-widest">•••••</span>
-                  <span className="text-[10px]">⟷</span>
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px]">⇅</span>
+                  <span className="text-[8px] leading-none">
+                    •<br />•<br />•
+                  </span>
+                  <span className="text-[10px]">⇅</span>
                 </div>
                 <span className="font-medium">MEM</span>
               </div>
             </div>
           )}
-          
+
           {/* Status indicator */}
-          <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
-            <div className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-              isActive 
-                ? 'bg-amber-200 dark:bg-amber-700/50 text-amber-800 dark:text-amber-200' 
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
-            }`}>
-              {isActive 
-                ? `${source} → ${destination}` 
-                : "Idle"}
+          <div className="absolute -right-16 top-1/2 transform -translate-y-1/2">
+            <div
+              className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                isActive
+                  ? "bg-amber-200 dark:bg-amber-700/50 text-amber-800 dark:text-amber-200"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+              }`}
+            >
+              {isActive ? `${source} → ${destination}` : "Idle"}
             </div>
           </div>
         </div>
@@ -234,37 +250,24 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
         </div>
 
         {/* Bus in the middle */}
-        <div className="border-2 border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50 dark:bg-amber-900/20">
+        {/* <div className="border-2 border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50 dark:bg-amber-900/20">
           <h4 className="text-md font-medium py-1 text-center text-amber-700 dark:text-amber-300">
             System Bus
           </h4>
 
-          {isSkeletalMode ? (
-            <SkeletalBus />
-          ) : (
-            <div className="p-4 space-y-2">
-              {/* Horizontal bus connections */}
-              <div className="w-full px-4">
-                <Bus bus={state.bus} />
-              </div>
-
-              <div className="bg-amber-100 dark:bg-amber-800/30 p-3 rounded-lg w-full">
-                <p className="text-xs text-amber-800 dark:text-amber-300 text-center">
-                  The system bus transfers data between CPU and memory
-                  {state.bus.isActive && (
-                    <>
-                      <br />
-                      <span className="font-medium">
-                        Current transfer: {state.bus.source} →{" "}
-                        {state.bus.destination}
-                      </span>
-                    </>
-                  )}
-                </p>
-              </div>
+          
+        </div> */}
+        {isSkeletalMode ? (
+          <SkeletalBus />
+        ) : (
+          <div className="p-4">
+            {/* Vertical bus connections */}
+            <div className="h-24 flex justify-center">
+              <Bus bus={state.bus} />
+              {/* {state.bus.destination} */}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Memory Unit at the bottom */}
         <div className="border-2 border-green-200 dark:border-green-800 rounded-lg p-2 bg-green-50 dark:bg-green-900/20">
