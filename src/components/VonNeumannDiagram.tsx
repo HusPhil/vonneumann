@@ -139,30 +139,96 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
     };
 
     // Determine direction of data flow
-    const isFlowingToCPU = destination === "CPU";
+    const isFlowingToCPU = destination === "ACC";
     const isFlowingToMemory = destination === "Memory";
 
     return (
       <div className="p-2">
-        <div className="relative h-24 flex justify-center">
-          {/* Base vertical wire */}
-          <div className="absolute h-full w-1.5 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-300 dark:from-amber-700 dark:via-amber-500 dark:to-amber-700 rounded-full"></div>
+        <div className="relative h-24 flex flex-col items-center">
+          {/* Main content with bus channels */}
+          <div className="relative h-full w-full flex items-center justify-between px-8">
+            {/* CPU to Memory Channel */}
+            <div className="relative h-full w-6 flex flex-col items-center justify-center">
+              <div
+                className={`h-full w-2 rounded-full ${
+                  isActive && isFlowingToMemory
+                    ? "bg-gradient-to-b from-amber-300 to-amber-500 dark:from-amber-500 dark:to-amber-700"
+                    : "bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800"
+                } transition-colors duration-300`}
+              >
+                {/* Connection points */}
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-4 h-3 rounded-full flex items-center justify-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      isActive && isFlowingToMemory
+                        ? "bg-blue-500 dark:bg-blue-400"
+                        : "bg-blue-400 dark:bg-blue-600"
+                    }`}
+                  ></div>
+                </div>
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-4 h-3 rounded-full flex items-center justify-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      isActive && isFlowingToMemory
+                        ? "bg-green-500 dark:bg-green-400"
+                        : "bg-green-400 dark:bg-green-600"
+                    }`}
+                  ></div>
+                </div>
+              </div>
 
-          {/* Connection points */}
-          <div className="absolute top-0 w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-400 border border-amber-600 dark:border-amber-300 shadow-sm"></div>
-          <div className="absolute bottom-0 w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-400 border border-amber-600 dark:border-amber-300 shadow-sm"></div>
+              {/* Label */}
+              <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 -rotate-90">
+                <span className="text-[8px] font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">
+                  CPU→MEM
+                </span>
+              </div>
+            </div>
+
+            {/* Memory to CPU Channel */}
+            <div className="relative h-full w-6 flex flex-col items-center justify-center">
+              <div
+                className={`h-full w-2 rounded-full ${
+                  isActive && isFlowingToCPU
+                    ? "bg-gradient-to-b from-amber-300 to-amber-500 dark:from-amber-500 dark:to-amber-700"
+                    : "bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800"
+                } transition-colors duration-300`}
+              >
+                {/* Connection points */}
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-4 h-3 rounded-full flex items-center justify-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      isActive && isFlowingToCPU
+                        ? "bg-blue-500 dark:bg-blue-400"
+                        : "bg-blue-400 dark:bg-blue-600"
+                    }`}
+                  ></div>
+                </div>
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-4 h-3 rounded-full flex items-center justify-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      isActive && isFlowingToCPU
+                        ? "bg-green-500 dark:bg-green-400"
+                        : "bg-green-400 dark:bg-green-600"
+                    }`}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Label */}
+              <div className="absolute -right-1 top-1/2 transform -translate-y-1/2 rotate-90">
+                <span className="text-[8px] font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">
+                  MEM→CPU
+                </span>
+              </div>
+            </div>
+          </div>
 
           {/* Data transfer visualization */}
-          {isActive ? (
-            <div className="flex items-center justify-center h-full">
+          {isActive && (
+            <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
               <div
-                className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-800/60 shadow-sm transform transition-transform duration-300 ${
-                  isFlowingToCPU
-                    ? "-translate-y-2"
-                    : isFlowingToMemory
-                    ? "translate-y-2"
-                    : ""
-                }`}
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-800/60 shadow-sm`}
               >
                 <div
                   className={`w-2 h-2 rounded-full ${
@@ -189,24 +255,10 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <div className="flex flex-col items-center gap-1.5 text-xs text-amber-700 dark:text-amber-400">
-                <span className="font-medium">CPU</span>
-                <div className="flex flex-col items-center">
-                  <span className="text-[10px]">⇅</span>
-                  <span className="text-[8px] leading-none">
-                    •<br />•<br />•
-                  </span>
-                  <span className="text-[10px]">⇅</span>
-                </div>
-                <span className="font-medium">MEM</span>
-              </div>
-            </div>
           )}
 
           {/* Status indicator */}
-          <div className="absolute -right-16 top-1/2 transform -translate-y-1/2">
+          <div className="w-full flex justify-center absolute top-1/2">
             <div
               className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                 isActive
