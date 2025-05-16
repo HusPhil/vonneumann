@@ -19,56 +19,134 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
     setIsSkeletalMode(!isSkeletalMode);
   };
 
-  // Skeletal view of CPU components
+  // Compact skeletal view of CPU components
   const SkeletalCPU = () => (
-    <div className="p-3">
+    <div className="p-2 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 rounded-lg">
       <div className="grid grid-cols-2 gap-2">
-        <div className="p-2 border rounded bg-blue-50 dark:bg-blue-900/30">
-          <h5 className="text-xs font-medium dark:text-white">Control Unit</h5>
-          <p className="text-xs dark:text-gray-300">
-            Phase: {state.cpu.cu.phase}
-          </p>
+        {/* Control Unit */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-2 border border-blue-200 dark:border-blue-700">
+          <div className="flex items-center mb-1">
+            <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full mr-1.5"></div>
+            <h4 className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+              Control Unit
+            </h4>
+          </div>
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
+                Phase:
+              </span>
+              <span className="text-xs font-mono bg-blue-100 dark:bg-blue-800/50 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded capitalize">
+                {state.cpu.cu.phase}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
+                Controls:
+              </span>
+              <span className="text-xs font-mono bg-blue-100 dark:bg-blue-800/50 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded">
+                {state.cpu.cu.activeControl.length}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="p-2 border rounded bg-blue-50 dark:bg-blue-900/30">
-          <h5 className="text-xs font-medium dark:text-white">ALU</h5>
-          <p className="text-xs dark:text-gray-300">
-            Output: {state.cpu.alu.output}
-          </p>
+
+        {/* ALU */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-2 border border-blue-200 dark:border-blue-700">
+          <div className="flex items-center mb-1">
+            <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full mr-1.5"></div>
+            <h4 className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+              ALU
+            </h4>
+          </div>
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
+                Op:
+              </span>
+              <span className="text-xs font-mono bg-blue-100 dark:bg-blue-800/50 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded">
+                {state.cpu.alu.operation || "None"}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
+                Out:
+              </span>
+              <span className="text-xs font-mono bg-blue-100 dark:bg-blue-800/50 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded">
+                {state.cpu.alu.output}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="mt-2 p-2 border rounded bg-blue-50 dark:bg-blue-900/30">
-        <h5 className="text-xs font-medium dark:text-white">Registers</h5>
-        <div className="grid grid-cols-4 gap-1 mt-1">
-          <div className="text-center">
-            <span className="text-xs dark:text-gray-300">
-              PC: {state.cpu.pc}
-            </span>
+
+      {/* Registers */}
+      <div className="mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-2 border border-blue-200 dark:border-blue-700">
+        <div className="flex items-center mb-1">
+          <div className="w-1.5 h-1.5 bg-blue-500 dark:bg-blue-400 rounded-full mr-1.5"></div>
+          <h4 className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+            Registers
+          </h4>
+        </div>
+
+        <div className="grid grid-cols-4 gap-1.5">
+          {/* PC Register */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-md">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                PC:
+              </span>
+              <span className="text-xs font-mono font-medium text-blue-800 dark:text-blue-200">
+                {state.cpu.pc}
+              </span>
+            </div>
           </div>
-          <div className="text-center">
-            <span className="text-xs dark:text-gray-300">
-              ACC: {state.cpu.acc}
-            </span>
+
+          {/* IR Register */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-md col-span-1">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                IR:
+              </span>
+              <span className="text-xs font-mono font-medium text-blue-800 dark:text-blue-200 truncate max-w-[60px]">
+                {state.cpu.ir.opcode
+                  ? `${state.cpu.ir.opcode} ${state.cpu.ir.operand || ""}`
+                  : "-"}
+              </span>
+            </div>
           </div>
-          <div className="text-center">
-            <span className="text-xs dark:text-gray-300">
-              MAR: {state.cpu.mar}
-            </span>
+
+          {/* ACC Register */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-md">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                ACC:
+              </span>
+              <span className="text-xs font-mono font-medium text-blue-800 dark:text-blue-200">
+                {state.cpu.acc}
+              </span>
+            </div>
           </div>
-          <div className="text-center">
-            <span className="text-xs dark:text-gray-300">
-              IR:{" "}
-              {state.cpu.ir.opcode
-                ? `${state.cpu.ir.opcode} ${state.cpu.ir.operand || ""}`
-                : "Empty"}
-            </span>
+
+          {/* MAR Register */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-1 rounded-md">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                MAR:
+              </span>
+              <span className="text-xs font-mono font-medium text-blue-800 dark:text-blue-200">
+                {state.cpu.mar}
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 
-  // Skeletal view of memory
+  // Compact skeletal view of memory
   const SkeletalMemory = () => {
+    const activeCell = state.memory.find((cell) => cell.isActive);
     const instructionCount = state.memory.filter(
       (cell) => cell.type === "instruction"
     ).length;
@@ -77,52 +155,126 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
     ).length;
 
     return (
-      <div className="p-3">
+      <div className="p-2 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 rounded-lg">
         <div className="grid grid-cols-2 gap-2">
-          <div className="p-2 border rounded bg-green-50 dark:bg-green-900/30">
-            <h5 className="text-xs font-medium dark:text-white">
-              Instructions
-            </h5>
-            <p className="text-xs dark:text-gray-300">
-              {instructionCount} instructions (0-9)
-            </p>
-            {state.memory.find(
-              (cell) => cell.isActive && cell.type === "instruction"
-            ) && (
-              <p className="text-xs mt-1 font-bold dark:text-green-300">
-                Active:{" "}
-                {
-                  state.memory.find(
-                    (cell) => cell.isActive && cell.type === "instruction"
-                  )?.address
-                }
-              </p>
-            )}
+          {/* Memory Overview */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-2 border border-green-200 dark:border-green-700">
+            <div className="flex items-center mb-1">
+              <div className="w-1.5 h-1.5 bg-green-500 dark:bg-green-400 rounded-full mr-1.5"></div>
+              <h4 className="text-xs font-semibold text-green-700 dark:text-green-300">
+                Memory Stats
+              </h4>
+            </div>
+
+            <div className="flex justify-between mb-1">
+              <div className="flex items-center">
+                <span className="text-xs text-gray-600 dark:text-gray-400 mr-1">
+                  Instr:
+                </span>
+                <span className="text-xs font-mono bg-green-100 dark:bg-green-800/50 text-green-700 dark:text-green-300 px-1.5 py-0.5 rounded">
+                  {instructionCount}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-xs text-gray-600 dark:text-gray-400 mr-1">
+                  Data:
+                </span>
+                <span className="text-xs font-mono bg-green-100 dark:bg-green-800/50 text-green-700 dark:text-green-300 px-1.5 py-0.5 rounded">
+                  {dataCount}
+                </span>
+              </div>
+            </div>
+
+            {/* Memory Usage Bar */}
+            <div className="mt-1">
+              <div className="flex justify-between items-center mb-0.5">
+                <span className="text-[10px] text-gray-600 dark:text-gray-400">
+                  Usage:
+                </span>
+                <span className="text-[10px] text-gray-600 dark:text-gray-400">
+                  {state.memory.filter((cell) => cell.content !== null).length}/
+                  {state.memory.length}
+                </span>
+              </div>
+              <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-green-400 to-green-500 dark:from-green-600 dark:to-green-500 rounded-full"
+                  style={{
+                    width: `${
+                      (state.memory.filter((cell) => cell.content !== null)
+                        .length /
+                        state.memory.length) *
+                      100
+                    }%`,
+                  }}
+                ></div>
+              </div>
+            </div>
           </div>
-          <div className="p-2 border rounded bg-green-50 dark:bg-green-900/30">
-            <h5 className="text-xs font-medium dark:text-white">Data</h5>
-            <p className="text-xs dark:text-gray-300">
-              {dataCount} data cells (10+)
-            </p>
-            {state.memory.find(
-              (cell) => cell.isActive && cell.type === "data"
-            ) && (
-              <p className="text-xs mt-1 font-bold dark:text-green-300">
-                Active:{" "}
-                {
-                  state.memory.find(
-                    (cell) => cell.isActive && cell.type === "data"
-                  )?.address
-                }
-              </p>
-            )}
-          </div>
+
+          {/* Active Memory Cell */}
+          {activeCell ? (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-2 border border-green-200 dark:border-green-700">
+              <div className="flex items-center mb-1">
+                <div className="w-1.5 h-1.5 bg-green-500 dark:bg-green-400 rounded-full mr-1.5"></div>
+                <h4 className="text-xs font-semibold text-green-700 dark:text-green-300">
+                  Active Cell
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-2 gap-1 mb-1">
+                <div className="bg-green-50 dark:bg-green-900/20 p-1 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-gray-600 dark:text-gray-400">
+                      Addr:
+                    </span>
+                    <span className="text-xs font-mono text-green-700 dark:text-green-300">
+                      {activeCell.address}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bg-green-50 dark:bg-green-900/20 p-1 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-gray-600 dark:text-gray-400">
+                      Type:
+                    </span>
+                    <span className="text-xs font-mono text-green-700 dark:text-green-300 capitalize">
+                      {activeCell.type}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-green-50 dark:bg-green-900/20 p-1 rounded-md">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-gray-600 dark:text-gray-400">
+                    Content:
+                  </span>
+                  <span className="text-xs font-mono text-green-700 dark:text-green-300 truncate max-w-[80px]">
+                    {typeof activeCell.content === "object" &&
+                    "opcode" in activeCell.content
+                      ? `${activeCell.content.opcode} ${
+                          activeCell.content.operand || ""
+                        }`
+                      : activeCell.content}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-2 border border-green-200 dark:border-green-700 flex items-center justify-center">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                No active cell
+              </span>
+            </div>
+          )}
         </div>
       </div>
     );
   };
 
-  // Skeletal view of bus
+  // Skeletal view of bus - keeping this unchanged as requested
   const SkeletalBus = () => {
     const { isActive, source, destination, data } = state.bus;
 
@@ -273,9 +425,10 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
       </div>
     );
   };
+
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold dark:text-white">
           Von Neumann Architecture
         </h3>
@@ -292,38 +445,30 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-3">
         {/* CPU Unit at the top */}
-        <div className="border-2 border-blue-200 dark:border-blue-800 rounded-lg p-2 bg-blue-50 dark:bg-blue-900/20">
-          <h4 className="text-md font-medium mb-1 text-center text-blue-700 dark:text-blue-300">
+        <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-1 bg-blue-50 dark:bg-blue-900/20">
+          <h4 className="text-sm font-medium text-center text-blue-700 dark:text-blue-300">
             CPU
           </h4>
           {isSkeletalMode ? <SkeletalCPU /> : <CPUComponents cpu={state.cpu} />}
         </div>
 
         {/* Bus in the middle */}
-        {/* <div className="border-2 border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50 dark:bg-amber-900/20">
-          <h4 className="text-md font-medium py-1 text-center text-amber-700 dark:text-amber-300">
-            System Bus
-          </h4>
-
-          
-        </div> */}
         {isSkeletalMode ? (
           <SkeletalBus />
         ) : (
-          <div className="p-4">
+          <div className="p-2">
             {/* Vertical bus connections */}
             <div className="h-24 flex justify-center">
               <Bus bus={state.bus} />
-              {/* {state.bus.destination} */}
             </div>
           </div>
         )}
 
         {/* Memory Unit at the bottom */}
-        <div className="border-2 border-green-200 dark:border-green-800 rounded-lg p-2 bg-green-50 dark:bg-green-900/20">
-          <h4 className="text-md font-medium mb-1 text-center text-green-700 dark:text-green-300">
+        <div className="border border-green-200 dark:border-green-800 rounded-lg p-1 bg-green-50 dark:bg-green-900/20">
+          <h4 className="text-sm font-medium text-center text-green-700 dark:text-green-300">
             Memory
           </h4>
           {isSkeletalMode ? (
