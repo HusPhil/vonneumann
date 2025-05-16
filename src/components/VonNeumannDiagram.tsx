@@ -15,54 +15,47 @@ const VonNeumannDiagram: React.FC<VonNeumannDiagramProps> = ({
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4 dark:text-white">
+      <h3 className="text-lg font-semibold mb-6 text-center dark:text-white">
         Von Neumann Architecture
       </h3>
 
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-8">
         {/* CPU Unit at the top */}
-        <div>
-          <h4 className="text-md font-medium mb-3 text-center dark:text-gray-300">
+        <div className="border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
+          <h4 className="text-md font-medium mb-3 text-center text-blue-700 dark:text-blue-300">
             CPU
           </h4>
           <CPUComponents cpu={state.cpu} />
         </div>
 
         {/* Bus in the middle */}
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="flex items-center justify-center w-full">
-            <div className="w-20 h-20 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full border-4 border-amber-400 dark:border-amber-600 flex items-center justify-center animate-pulse">
-                <span className="text-amber-600 dark:text-amber-400 font-semibold text-sm">
-                  BUS
-                </span>
-              </div>
-            </div>
-          </div>
-
+        <div className="flex flex-col items-center justify-center space-y-4 border-2 border-amber-200 dark:border-amber-800 rounded-lg p-4 bg-amber-50 dark:bg-amber-900/20">
+          <h4 className="text-md font-medium mb-2 text-center text-amber-700 dark:text-amber-300">
+            System Bus
+          </h4>
+          
           {/* Horizontal bus connections */}
-          <div className="w-full">
+          <div className="w-full px-4">
             <Bus bus={state.bus} />
           </div>
 
-          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg w-full">
-            <h4 className="text-sm font-medium mb-2 text-center dark:text-gray-300">
-              Von Neumann Bottleneck
-            </h4>
-            <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-              The shared bus for both instructions and data creates a
-              bottleneck, limiting performance as the CPU must wait for one
-              transfer to complete before the next can begin.
+          <div className="bg-amber-100 dark:bg-amber-800/30 p-3 rounded-lg w-full mt-2">
+            <p className="text-xs text-amber-800 dark:text-amber-300 text-center">
+              The system bus transfers data between CPU and memory
             </p>
           </div>
         </div>
 
         {/* Memory Unit at the bottom */}
-        <div>
-          <h4 className="text-md font-medium mb-3 text-center dark:text-gray-300">
-            Memory Unit
+        <div className="border-2 border-green-200 dark:border-green-800 rounded-lg p-4 bg-green-50 dark:bg-green-900/20">
+          <h4 className="text-md font-medium mb-3 text-center text-green-700 dark:text-green-300">
+            Memory
           </h4>
-          <MemoryDisplay memory={state.memory} onEditMemory={onEditMemory} />
+          <MemoryDisplay
+            memory={state.memory}
+            onEditMemory={onEditMemory}
+            isRunning={state.isRunning}
+          />
         </div>
       </div>
     </div>

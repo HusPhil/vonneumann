@@ -1,7 +1,7 @@
 export const examplePrograms = [
   {
-    name: 'Simple Addition',
-    description: 'Adds two numbers stored in memory',
+    name: "Simple Addition",
+    description: "Adds two numbers stored in memory",
     code: `// Load the first number from memory address 10
 LOAD 10
 // Add the second number from memory address 11
@@ -12,12 +12,12 @@ STORE 12
 HALT`,
     memorySetup: [
       { address: 10, value: 5 },
-      { address: 11, value: 7 }
-    ]
+      { address: 11, value: 7 },
+    ],
   },
   {
-    name: 'Counter',
-    description: 'A simple counter that counts down from 5 to 0',
+    name: "Counter",
+    description: "A simple counter that counts down from 5 to 0",
     code: `// Load counter value from memory
 LOAD 10
 // Label: START
@@ -31,40 +31,38 @@ JNZ 2
 HALT`,
     memorySetup: [
       { address: 10, value: 5 },
-      { address: 11, value: 1 }
-    ]
+      { address: 11, value: 1 },
+    ],
   },
   {
-    name: 'Fibonacci',
-    description: 'Calculates the first 5 Fibonacci numbers',
-    code: `// Initialize first Fibonacci number (F0 = 0)
-LOAD 15
-STORE 10
-// Initialize second Fibonacci number (F1 = 1)
-LOAD 16
-STORE 11
-// Start loop with counter = 5
-LOAD 17
-STORE 14
-// Loop: Calculate next Fibonacci number
-LOAD 11
-STORE 12
-LOAD 10
-ADD 11
-STORE 11
-LOAD 12
-STORE 10
-// Decrement counter
-LOAD 14
-SUB 16
-STORE 14
-// Continue if counter > 0
-JNZ 6
-HALT`,
+    name: "Fibonacci",
+    description: "Calculate Fibonacci numbers",
+    code: `// Load the value at memory address 11 into the accumulator
+LOAD 11      
+
+// Add the value at memory address 10 to the accumulator
+ADD 10       
+
+// Store the result from the accumulator into memory address 12
+STORE 12     
+
+// Load the original value from memory address 11 into the accumulator
+LOAD 11      
+
+// Store it into memory address 10 (effectively copying address 11 to 10)
+STORE 10     
+
+// Load the result (sum) from memory address 12 into the accumulator
+LOAD 12      
+
+// Store it into memory address 11 (updating it with the new value)
+STORE 11     
+
+// Jump to instruction at address 0 (infinite loop or restart)
+JUMP 0       
+`,
     memorySetup: [
-      { address: 15, value: 0 }, // F0 initial value
-      { address: 16, value: 1 }, // F1 initial value
-      { address: 17, value: 5 }  // Counter initial value
-    ]
-  }
+      { address: 11, value: 1 }, // F0 initial value
+    ],
+  },
 ];
