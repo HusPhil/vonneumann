@@ -78,7 +78,7 @@ const Bus: React.FC<BusProps> = ({ bus }) => {
           <AnimatePresence>
             {isActive && isFlowingToMemory && (
               <motion.div
-                className="absolute right-1/2 transform -translate-x-1/2 z-10"
+                className="absolute right-1/2 transform -translate-x-1/2 z-10 bottom-3"
                 variants={packetVariants}
                 animate="toMemory"
                 initial={{ y: -50 }}
@@ -148,7 +148,7 @@ const Bus: React.FC<BusProps> = ({ bus }) => {
           <AnimatePresence>
             {isActive && isFlowingToCPU && (
               <motion.div
-                className="absolute left-1/2 transform -translate-x-1/2 z-10"
+                className="absolute left-1/2 transform -translate-x-1/2 z-10 top-3"
                 variants={packetVariants}
                 animate="toCPU"
                 initial={{ y: 50 }}
