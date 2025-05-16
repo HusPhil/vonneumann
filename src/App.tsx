@@ -6,12 +6,13 @@ import OutputPanel from "./components/OutputPanel";
 import { initializeSimulatorState, executeStep } from "./utils/cpuExecution";
 import { loadProgramToMemory } from "./utils/assemblyParser";
 import { SimulatorState, MemoryCell, ParsedInstruction } from "./types";
-import { Cpu } from "lucide-react";
+import { Cpu, Eye, EyeOff } from "lucide-react";
 
 function App() {
   const [simulatorState, setSimulatorState] = useState<SimulatorState>(
     initializeSimulatorState(20)
   );
+  const [showControls, setShowControls] = useState(true);
   const intervalRef = useRef<number | null>(null);
 
   // Effect to handle continuous execution
@@ -108,14 +109,36 @@ function App() {
     setSimulatorState(newState);
   };
 
+  const toggleControls = () => {
+    setShowControls(!showControls);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 md:p-6">
       <header className="max-w-7xl mx-auto mb-6">
-        <div className="flex items-center space-x-3">
-          <Cpu size={32} className="text-blue-600 dark:text-blue-400" />
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-            Von Neumann CPU Architecture Simulator
-          </h1>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Cpu size={32} className="text-blue-600 dark:text-blue-400" />
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
+              Von Neumann CPU Architecture Simulator
+            </h1>
+          </div>
+          <button
+            onClick={toggleControls}
+            className="flex items-center space-x-2 px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            {showControls ? (
+              <>
+                <EyeOff size={16} />
+                <span className="text-sm">Hide Controls</span>
+              </>
+            ) : (
+              <>
+                <Eye size={16} />
+                <span className="text-sm">Show Controls</span>
+              </>
+            )}
+          </button>
         </div>
         <p className="mt-2 text-gray-600 dark:text-gray-300">
           An interactive visual simulator demonstrating the inner workings of a
@@ -124,24 +147,26 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className={`grid ${showControls ? 'grid-cols-1 lg:grid-cols-3' : 'grid-cols-1'} gap-6 mb-6`}>
           {/* Left column: Code Editor & Controls */}
-          <div className="space-y-6">
-            <CodeEditor onLoadProgram={handleLoadProgram} />
-            <ControlPanel
-              isRunning={simulatorState.isRunning}
-              isHalted={simulatorState.isHalted}
-              executionSpeed={simulatorState.executionSpeed}
-              onToggleRun={handleToggleRun}
-              onStep={handleStep}
-              onReset={handleReset}
-              onSpeedChange={handleSpeedChange}
-            />
-            <OutputPanel output={simulatorState.programOutput} />
-          </div>
+          {showControls && (
+            <div className="space-y-6">
+              <CodeEditor onLoadProgram={handleLoadProgram} />
+              <ControlPanel
+                isRunning={simulatorState.isRunning}
+                isHalted={simulatorState.isHalted}
+                executionSpeed={simulatorState.executionSpeed}
+                onToggleRun={handleToggleRun}
+                onStep={handleStep}
+                onReset={handleReset}
+                onSpeedChange={handleSpeedChange}
+              />
+              <OutputPanel output={simulatorState.programOutput} />
+            </div>
+          )}
 
-          {/* Right column: CPU Diagram (spans 2 columns) */}
-          <div className="lg:col-span-2">
+          {/* Right column: CPU Diagram (spans 2 columns when controls are shown, full width when hidden) */}
+          <div className={showControls ? "lg:col-span-2" : "w-full"}>
             <VonNeumannDiagram
               state={simulatorState}
               onEditMemory={handleEditMemory}

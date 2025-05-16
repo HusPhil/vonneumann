@@ -36,8 +36,6 @@ const MemoryDisplay: React.FC<MemoryDisplayProps> = ({
 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4 dark:text-white">Memory</h3>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
         {/* Instructions Section */}
         <div className="flex flex-col h-full">

@@ -1,0 +1,76 @@
+/* Animations for the bus wires */
+@keyframes flowLeft {
+  0% {
+    left: 70%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 30%;
+    opacity: 0;
+  }
+}
+
+@keyframes flowRight {
+  0% {
+    left: 30%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 70%;
+    opacity: 0;
+  }
+}
+
+@keyframes pulseLeft {
+  0% {
+    width: 0;
+    left: 70%;
+    opacity: 0.7;
+  }
+  100% {
+    width: 40%;
+    left: 30%;
+    opacity: 0;
+  }
+}
+
+@keyframes pulseRight {
+  0% {
+    width: 0;
+    left: 30%;
+    opacity: 0.7;
+  }
+  100% {
+    width: 40%;
+    left: 30%;
+    opacity: 0;
+  }
+}
+
+.animate-flow-left {
+  animation: flowLeft 2s infinite;
+}
+
+.animate-flow-right {
+  animation: flowRight 2s infinite;
+}
+
+.animate-pulse-left {
+  animation: pulseLeft 1s infinite;
+}
+
+.animate-pulse-right {
+  animation: pulseRight 1s infinite;
+}

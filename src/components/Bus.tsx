@@ -1,5 +1,5 @@
-import React from 'react';
-import { BusState } from '../types';
+import React from "react";
+import { BusState } from "../types";
 
 interface BusProps {
   bus: BusState;
@@ -7,21 +7,27 @@ interface BusProps {
 
 const Bus: React.FC<BusProps> = ({ bus }) => {
   const { isActive, source, destination, data } = bus;
-  
+
   // Format data for display
   const displayData = () => {
-    if (data === null) return '';
-    if (typeof data === 'number') return data.toString();
-    if (typeof data === 'object' && 'opcode' in data) {
-      return data.operand !== undefined 
+    if (data === null) return "";
+    if (typeof data === "number") return data.toString();
+    if (typeof data === "object" && "opcode" in data) {
+      return data.operand !== undefined
         ? `${data.opcode} ${data.operand}`
         : data.opcode;
     }
     return JSON.stringify(data);
   };
-  
+
   return (
-    <div className={`relative w-full h-6 border-2 ${isActive ? 'border-amber-500 bg-amber-100 dark:bg-amber-900/30' : 'border-gray-300 dark:border-gray-700'} rounded-full flex items-center justify-center transition-all duration-300`}>
+    <div
+      className={`relative w-full h-6 border-2 py-4 ${
+        isActive
+          ? "border-amber-500 bg-amber-100 dark:bg-amber-900/30"
+          : "border-gray-300 dark:border-gray-700"
+      } rounded-full flex items-center justify-center transition-all duration-300`}
+    >
       {isActive && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex items-center space-x-2">

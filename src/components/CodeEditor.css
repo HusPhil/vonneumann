@@ -1,0 +1,58 @@
+/* Custom Scrollbar Styles */
+.custom-scrollbar-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light mode scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3b82f6; /* blue-500 */
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2563eb; /* blue-600 */
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #374151; /* gray-700 */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #3b82f6; /* blue-500 */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #60a5fa; /* blue-400 */
+  }
+}
+
+/* Firefox scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #f1f1f1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .custom-scrollbar {
+    scrollbar-color: #3b82f6 #374151;
+  }
+}
+
+/* Make sure textarea has the scrollbar visible */
+textarea.custom-scrollbar {
+  overflow-y: auto;
+}
